@@ -38,7 +38,7 @@ namespace PWBE.TeamAthlete.Web.Controllers
         }
 
         [HttpDelete]
-        public void Delete(long id)
+        public void Delete(int id)
         {
             this.Service.Delete(id);
         }

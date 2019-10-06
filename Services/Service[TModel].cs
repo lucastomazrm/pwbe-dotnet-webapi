@@ -46,7 +46,7 @@ namespace PWBE.TeamAthlete.Services
             base.Save();
         }
 
-        public void Delete(object id)
+        public void Delete(int id)
         {
             var item = this.Get(id);
             this.context.Set<T>().Remove(item);

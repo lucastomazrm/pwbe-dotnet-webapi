@@ -1,8 +1,7 @@
-applications:
-- name: pwbe
-  random-route: true
-  memory: 512M
-  env:
-    DOTNET_CLI_TELEMETRY_OPTOUT: 1
-    DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-    CONNECTION_STRING: "Server=db-pwbe.cqtjtpjk6ewi.us-east-2.rds.amazonaws.com;Database=pwbe;Uid=app_pwbe;Pwd=2019$Ibm;pooling = false; convert zero datetime=True"
+---
+path: build/
+memory: 64M
+instances: 1
+domain: mybluemix.net
+disk_quota: 1024M
+buildpack: https://github.com/cloudfoundry/staticfile-buildpack.git

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import MaterialTable from 'material-table';
 import './App.css';
+import { CircularProgress } from '@material-ui/core';
 
 function App() {
 
@@ -32,7 +33,7 @@ function App() {
           title="Teams"
           columns={[
             {
-              title: 'Id',
+              title: 'ID',
               field: 'id',
               editable: 'never',
             },
@@ -59,13 +60,9 @@ function App() {
                   },
                   body: JSON.stringify(newData)
                 });
-                const content = await rawResponse.json()
-                  .then(() => {
-                    loadTeams();
-                    resolve(content);
-                  }).catch((error) => {
-                    reject(error);
-                  });
+                await rawResponse.json();
+                loadTeams();
+                resolve();
               }),
             onRowUpdate: (newData, oldData) =>
               new Promise(async (resolve, reject) => {
@@ -77,25 +74,18 @@ function App() {
                   },
                   body: JSON.stringify(newData)
                 });
-                const content = await rawResponse.json()
-                  .then(() => {
-                    loadTeams();
-                    resolve(content);
-                  }).catch((error) => {
-                    reject(error);
-                  });
+                await rawResponse.json();
+                loadTeams();
+                resolve();
               }),
             onRowDelete: oldData =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  {
-                    /* let data = this.state.data;
-                    const index = data.indexOf(oldData);
-                    data.splice(index, 1);
-                    this.setState({ data }, () => resolve()); */
-                  }
-                  resolve();
-                }, 1000);
+              new Promise(async (resolve, reject) => {
+                const rawResponse = await fetch(`https://pwbe-cotemig.mybluemix.net/api/Teams?id=${oldData.id}`, {
+                  method: 'DELETE',
+                });
+                await rawResponse.json();
+                loadTeams();
+                resolve();
               })
           }}
         />
@@ -187,7 +177,16 @@ function App() {
     );
   }
 
-  return null;
+  return (
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}
+      className="progress-circle">
+      <CircularProgress style={{
+      }} />
+    </div>);
 }
 
 export default App;
