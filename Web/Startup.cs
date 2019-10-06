@@ -45,15 +45,12 @@ namespace PWBE.TeamAthlete.Web
         {
             app.UseDeveloperExceptionPage();
 
-
             app.UseSwagger(option => option.RouteTemplate = Configuration["SwaggerOptions:JsonRoute"]);
             app.UseSwaggerUI(option => option.SwaggerEndpoint(Configuration["SwaggerOptions:UiEndPoint"], Configuration["SwaggerOptions:Description"]));
-
 
             app.UseCors("CorsPolicy");
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials());
 
-            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc(routes =>
             {
