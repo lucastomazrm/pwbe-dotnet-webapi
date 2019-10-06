@@ -1,2 +1,16 @@
 @Html.Raw(System.IO.Directory.GetCurrentDirectory())
 <!-- @Html.Raw(System.IO.File.ReadAllText("web/wwwroot/build/index.html")) -->
+@model System.Collections.Generic.IEnumerable<System.IO.FileInfo>
+
+    <h1>Files</h1>
+    <table>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.Name
+            </td>
+        </tr>
+    }
+
+    </table>
