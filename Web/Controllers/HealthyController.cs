@@ -10,7 +10,8 @@ namespace PWBE.TeamAthlete.Web.Controllers
     public class HealthyController : Controller
     {
         [AllowAnonymous]
-        public IEnumerable<string> Index()
+        [Route("files")]
+        public IEnumerable<string> Files()
         {
             string dirPath = Directory.GetCurrentDirectory();
             List<string> files = new List<string>();
@@ -20,6 +21,12 @@ namespace PWBE.TeamAthlete.Web.Controllers
                 files.Add(fInfo.Name);
             }
             return files.ToArray();
+        }
+        [AllowAnonymous]
+        [Route("directory")]
+        public string CurDirectory()
+        {
+            return Directory.GetCurrentDirectory();
         }
     }
 }
