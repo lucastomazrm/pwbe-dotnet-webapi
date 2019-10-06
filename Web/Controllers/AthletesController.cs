@@ -33,7 +33,7 @@ namespace PWBE.TeamAthlete.Web.Controllers
         [HttpPut]
         public Athlete Put([FromBody]Athlete model)
         {
-            this.Service.Save(model);
+            this.Service.Update(model);
             return model;
         }
 
