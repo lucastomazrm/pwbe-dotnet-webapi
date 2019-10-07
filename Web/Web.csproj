@@ -26,6 +26,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
+   <ItemGroup>
+        <None Include="web.config" CopyToPublishDirectory="Always" />
+    </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
