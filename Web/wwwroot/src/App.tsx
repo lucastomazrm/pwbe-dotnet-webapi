@@ -6,10 +6,11 @@ import { CircularProgress } from '@material-ui/core';
 function App() {
 
   const [teams, setTeams] = useState([]);
+  const [athletes, setAthletes] = useState([]);
   const [lookup, setLookup] = useState({});
 
   const loadTeams = () => {
-    let url = 'https://pwbe-cotemig.mybluemix.net/api/Teams';
+    let url = 'https://localhost:5001/api/Teams';
     fetch(url)
       .then(response => response.json())
       .then(result => {
@@ -19,6 +20,16 @@ function App() {
         });
         setLookup(temp);
         setTeams(result);
+        loadAthletes();
+      })
+  }
+
+  const loadAthletes = () => {
+    let url = 'https://localhost:5001/api/Athletes';
+    fetch(url)
+      .then(response => response.json())
+      .then(result => {
+        setAthletes(result);
       })
   }
 
@@ -52,7 +63,7 @@ function App() {
           editable={{
             onRowAdd: newData =>
               new Promise(async (resolve, reject) => {
-                const rawResponse = await fetch('https://pwbe-cotemig.mybluemix.net/api/Teams', {
+                const rawResponse = await fetch('https://localhost:5001/api/Teams', {
                   method: 'POST',
                   headers: {
                     'Accept': 'application/json',
@@ -66,7 +77,7 @@ function App() {
               }),
             onRowUpdate: (newData, oldData) =>
               new Promise(async (resolve, reject) => {
-                const rawResponse = await fetch('https://pwbe-cotemig.mybluemix.net/api/Teams', {
+                const rawResponse = await fetch('https://localhost:5001/api/Teams', {
                   method: 'PUT',
                   headers: {
                     'Accept': 'application/json',
@@ -80,7 +91,7 @@ function App() {
               }),
             onRowDelete: oldData =>
               new Promise(async (resolve, reject) => {
-                const rawResponse = await fetch(`https://pwbe-cotemig.mybluemix.net/api/Teams?id=${oldData.id}`, {
+                const rawResponse = await fetch(`https://localhost:5001/api/Teams?id=${oldData.id}`, {
                   method: 'DELETE',
                 });
                 await rawResponse.json();
@@ -116,14 +127,14 @@ function App() {
           },
           {
             title: 'Team',
-            field: 'team',
+            field: 'teamId',
             render: (rowData: any) => rowData.team.name,
             lookup: lookup,
           },
           ]}
           data={query =>
             new Promise((resolve, reject) => {
-              let url = 'https://pwbe-cotemig.mybluemix.net/api/Athletes';
+              let url = 'https://localhost:5001/api/Athletes';
               fetch(url)
                 .then(response => response.json())
                 .then(result => {
@@ -137,39 +148,41 @@ function App() {
           }
           editable={{
             onRowAdd: newData =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  {
-                    /* const data = this.state.data;
-                    data.push(newData);
-                    this.setState({ data }, () => resolve()); */
-                  }
-                  resolve();
-                }, 1000);
+              new Promise(async (resolve, reject) => {
+                const rawResponse = await fetch('https://localhost:5001/api/Athletes', {
+                  method: 'POST',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(newData)
+                });
+                await rawResponse.json();
+                loadAthletes();
+                resolve();
               }),
             onRowUpdate: (newData, oldData) =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  {
-                    /* const data = this.state.data;
-                    const index = data.indexOf(oldData);
-                    data[index] = newData;                
-                    this.setState({ data }, () => resolve()); */
-                  }
-                  resolve();
-                }, 1000);
+              new Promise(async (resolve, reject) => {
+                const rawResponse = await fetch('https://localhost:5001/api/Athletes', {
+                  method: 'PUT',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(newData)
+                });
+                await rawResponse.json();
+                loadAthletes();
+                resolve();
               }),
             onRowDelete: oldData =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  {
-                    /* let data = this.state.data;
-                    const index = data.indexOf(oldData);
-                    data.splice(index, 1);
-                    this.setState({ data }, () => resolve()); */
-                  }
-                  resolve();
-                }, 1000);
+              new Promise(async (resolve, reject) => {
+                const rawResponse = await fetch(`https://localhost:5001/api/Athletes?id=${oldData.id}`, {
+                  method: 'DELETE',
+                });
+                await rawResponse.json();
+                loadAthletes();
+                resolve();
               })
           }}
         />
